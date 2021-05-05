@@ -17,7 +17,7 @@ const RoundedButton = ({
 const styles = (size) =>
   StyleSheet.create({
     radius: {
-      borderRadius: size / 2,
+      borderRadius: Math.round(size / 2),
       width: size,
       height: size,
       alignItems: "center",
@@ -25,7 +25,7 @@ const styles = (size) =>
       borderColor: "#fff",
       borderWidth: 2,
     },
-    text: { color: "#fff", fontsize: size / 3 },
+    text: { color: "#fff", fontSize: Math.round(size / 3) },
   });
 
 export default RoundedButton;

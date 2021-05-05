@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import Constants from "expo-constants";
 import { Subject as SubjectComponent } from "./src/features/subject/index";
+import { Timer } from "./src/features/timer/timer";
 
 export default function App() {
   const [focusSub, setFocusSub] = useState(null);
   return (
     <View style={styles.container}>
       {focusSub ? (
-        <Text> {focusSub}</Text>
+        <Timer subject={focusSub} />
       ) : (
         <SubjectComponent addSubject={setFocusSub} />
       )}
