@@ -1,20 +1,46 @@
 import React, { useState, useRef, useEffect } from "react";
 import { StyleSheet, View, Text } from "react-native";
 
-export const CountDown = ({ minutes = 1, isPaused, setProgress }) => {
+export const CountDown = ({ minutes = 1, isPaused, setProgress, onEnd }) => {
   const minuteToMilis = (min) => min * 1000 * 60;
   const [milis, setMilis] = useState(minuteToMilis(minutes));
   const formatTime = (time) => (time < 10 ? `0${time}` : time);
+  const [totalTime, setTotalTime] = useState(milis);
 
   const intervalHandler = useRef(null);
 
   const countDown = () => {
     setMilis((time) => {
-      if (time === 0) return time;
+      if (time === 0) {
+        clearInterval(intervalHandler.current);
+        setProgress(1);
+        onEnd();
+        return time;
+      }
       const timeLeft = time - 1000;
+      let percentage = (totalTime - timeLeft) / totalTime;
+      // if (percentage > 1) {
+      //   percentage = 1;
+      // }
+
+      setProgress(percentage);
       return timeLeft;
     });
   };
+
+  const initData = () => {
+    const time = minuteToMilis(minutes);
+    setMilis(time);
+    setTotalTime(time);
+    if (intervalHandler.current) {
+      clearInterval(intervalHandler.current);
+    }
+  };
+
+  useEffect(() => {
+    initData(minutes);
+    return () => {};
+  }, [minutes]);
 
   useEffect(() => {
     if (isPaused) {
